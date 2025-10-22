@@ -8,13 +8,13 @@ export default function App() {
   const [wilgotnoscZmierzona, setWilgotnoscZmierzona] = useState("");
   const [wilgotnoscDocelowa, setWilgotnoscDocelowa] = useState("");
   const [masaWilgotna, setMasaWilgotna] = useState("");
-  const [masaWysuszona, setMasaWysuszona] = useState("");
+  const [masaWysuszona, setMasaWysuszona] = useState("uzupełnij wartości");
   useEffect(() => {
     if (isReset) {
       setWilgotnoscZmierzona("");
       setWilgotnoscDocelowa("");
       setMasaWilgotna("");
-      setMasaWysuszona("");
+      setMasaWysuszona("uzupełnij wartości");
     }
     setIsReset(false);
   }, [isReset]);
@@ -23,7 +23,9 @@ export default function App() {
     const b1 = Number(wilgotnoscZmierzona);
     const b2 = Number(wilgotnoscDocelowa);
     const b3 = Number(masaWilgotna);
-    setMasaWysuszona(((b3 * (100 - b1)) / (100 - b2)).toFixed(2));
+    const result = (b3 * (100 - b1)) / (100 - b2);
+    if (result !== Infinity && !isNaN(result) && Number(result) !== 0)
+      setMasaWysuszona(result.toFixed(2));
   }, [wilgotnoscZmierzona, wilgotnoscDocelowa, masaWilgotna]);
 
   return (
@@ -69,7 +71,7 @@ export default function App() {
             decimalPlaces={2}
             unit="t"
           />
-          <Result title="Masa wysuszona" result={masaWysuszona} />
+          <Result title="Masa wysuszona" result={masaWysuszona} unit="t" />
         </Section>
       </div>
     </div>
